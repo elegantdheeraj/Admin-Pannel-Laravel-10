@@ -32,7 +32,7 @@ This project is an Admin Panel that provides comprehensive user management, acce
 1. **Clone the repository:**
     ```sh
     git clone https://github.com/elegantdheeraj/mart.git
-    cd mart
+    cd Admin-Pannel-Laravel-10
     ```
 
 2. Configure environment variables
