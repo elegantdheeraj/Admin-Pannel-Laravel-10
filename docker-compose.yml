@@ -1,0 +1,55 @@
+version: "3.8"
+services:
+
+    # PHP service
+    app:
+        build: .
+        container_name: php-8
+        working_dir: /var/www/html/
+        volumes:
+            - ./:/var/www/html/
+        networks:
+            - php8-network
+
+    # MySQL database service
+    db:
+        image: mysql:8.0
+        command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+        restart: always
+        container_name: php8db
+        ports:
+            - 3312:3306
+        expose:
+            - 3306
+        environment:
+            MYSQL_ROOT_PASSWORD: 'php123'
+            # MYSQL_DATABASE: 'php_8_db'
+            MYSQL_USER: 'php_8_user'
+            MYSQL_PASSWORD: 'php123'
+            # MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+        volumes:
+          - php8-mysql:/var/lib/mysql
+        networks:
+            - php8-network
+
+    # Nginx service
+    nginx:
+        image: nginx:alpine
+        container_name: php8-nginx
+        ports:
+            - 8001:81
+            - 8002:80
+            - 8003:8080
+            - 8004:8090
+            - 8005:8005
+        volumes:
+            - ./:/var/www/html/
+            - ./nginx/:/etc/nginx/conf.d/
+        networks:
+            - php8-network
+networks:
+    php8-network:
+        driver: bridge
+volumes:
+    php8-mysql:
+        driver: local

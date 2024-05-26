@@ -1,0 +1,66 @@
+/* html,* { font-family: 'Inter'; box-sizing: border-box; }
+body { background-color: #fafafa; line-height:1.6;}
+.lead { font-size: 1.5rem; font-weight: 300; }
+.container { margin: 150px auto; max-width: 960px; } */
+ul.tree, ul.tree * {
+    list-style-type: none;
+    margin: 0;
+    padding: 0 0 5px 0;
+}
+ul.tree img.arrow {
+    padding: 2px 0 0 0;
+    border: 0;
+    width: 20px;
+}
+ul.tree li {
+    padding: 4px 0 0 0;
+    line-height: 18px;
+}
+ul.tree li ul {
+    padding: 0 0 0 20px;
+    margin: 0;
+}
+ul.tree label {
+    cursor: pointer;
+    /* font-weight: bold; */
+    padding: 2px 0;
+}
+/* ul.tree label.hover {
+    color: rgb(81, 189, 95);
+} */
+
+ul {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+ul.tree li .arrow {
+    width: 20px;
+    height: 18px;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    float: left;
+    background: transparent no-repeat 0 0px;
+}
+ul.tree li .collapsed {
+    background-image: url(images/right.svg);
+}
+ul.tree li .expanded {
+    background-image: url(images/down.svg);
+}
+
+ul.tree li .checkbox {
+    width: 20px;
+    height: 18px;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    float: left;
+    background: url(images/square.svg) no-repeat 0 0px;
+}
+ul.tree li .checked {
+    background-image: url(images/check.svg);
+}
+ul.tree li .half_checked {
+    background-image: url(images/square-minus.svg);
+}
