@@ -40,7 +40,7 @@ Route::get('auth-forgot', function () {
 //     });
 // })->middleware(Authenticate::class);
 
-Route::middleware(['auth'])->group(function() {
+Route::middleware(['auth', 'checkAccess'])->group(function() {
     Route::prefix('backend')->group(function () {
         Route::get('/', function () {
             return view('backend.dashboard');
@@ -48,7 +48,8 @@ Route::middleware(['auth'])->group(function() {
         Route::prefix('user')->group(function () {
             Route::get('list', [Users::class, 'index']);
             Route::post('add', [Users::class, 'add_user']);
-            Route::get('edit', [Users::class, 'edit_user']);
+            Route::get('editForm/{id}', [Users::class, 'getEditUserForm']);
+            Route::post('edit', [Users::class, 'edit_user']);
             Route::get('approve/{id}', [Users::class, 'approve_user']);
             Route::get('delete/{id}', [Users::class, 'delete_user']);
             Route::get('roles', [Users::class, 'roles']);

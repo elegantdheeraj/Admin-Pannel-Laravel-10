@@ -137,7 +137,7 @@
                         <i class="bx bx-x-circle"></i>
                     </button>
                 @endif
-                @if(\App\Models\User::hasAccess('backend/user/add'))
+                @if(\App\Models\User::hasAccess('User Add'))
                     <div class="dt-buttons btn-group flex-wrap m-1">
                         {{-- <button class="btn buttons-collection dropdown-toggle btn-label-secondary mx-3" tabindex="0" aria-controls="" type="button" aria-haspopup="dialog" aria-expanded="false"><span><i class="bx bx-export me-1"></i>Export</span></button> --}}
                         <button class="btn btn-secondary add-new btn-primary" tabindex="0" aria-controls="" type="button"
@@ -189,14 +189,16 @@
                                 </td>
                                 <td>
                                     <div class="d-inline-block text-nowrap">
-                                        <button class="btn btn-sm btn-icon"><i class="bx bx-edit"></i></button>
+                                        <button class="btn btn-sm btn-icon" onclick="getUserEditForm({{$user->id}})" tabindex="0" aria-controls="" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEditUser"><i class="bx bx-edit"></i></button>
                                         @if($user->role != 1)
-                                            <a href="{{ url('backend/user/delete/'.$user->id) }}" target="_self" class="btn btn-sm btn-icon delete-record"><i class="bx bx-trash"></i></a>
+                                            <a href="{{ url('backend/user/delete/'.$user->id) }}" target="_self" class="btn btn-sm text-danger btn-icon delete-record"><i class="bx bx-trash"></i></a>
                                         @endif
                                         <button class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded me-2"></i></button>
                                         <div class="dropdown-menu dropdown-menu-end m-0">
                                             <a href="app-user-view-account.html" class="dropdown-item">View</a>
-                                            <a href="javascript:;" class="dropdown-item">Suspend</a>
+                                            @if($user->role != 1)
+                                                <a href="javascript:;" class="dropdown-item">Inactive</a>
+                                            @endif
                                         </div>
                                     </div>
                                 </td>
@@ -302,8 +304,20 @@
                 </div>
                 <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Submit</button>
                 <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
-                <input type="hidden">
             </form>
+        </div>
+    </div>
+    <!-- User edit form -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEditUser" aria-labelledby="offcanvasEditUserLabel" aria-modal="true" role="dialog">
+        <div class="offcanvas-header">
+            <h5 id="offcanvasEditUserLabel" class="offcanvas-title">Add User</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body mx-0 flex-grow-0" id="user_edit_form_area">
+            <div class="spinner-border spinner-grow-sm text-default m-auto" role="status">
+                <span class="visually-hidden"></span>
+            </div> Loading...
         </div>
     </div>
 @endSection
@@ -314,6 +328,11 @@
             if (event.key === "Enter") {
                 document.getElementById('filter-data-search-form').submit();
             }
+        }
+        function getUserEditForm(user_id) {
+            $.get(`{{ url('backend/user/editForm') }}/${user_id}`, function(res, status) {
+                $("#user_edit_form_area").html(res);
+            });
         }
     </script>
 @endSection

@@ -7,9 +7,10 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Exception;
 
 class Users extends Controller
 {
@@ -64,19 +65,102 @@ class Users extends Controller
                 'error' => 'Please fill the required field',
             ])->withInput();
         }
-        $newUser = User::find($request->get('user_id'));
-        $newUser->name = $request->get('userFullname');
-        $newUser->mobile = $request->get('userMobile');
-        $newUser->email = $request->get('userEmail');
-        $newUser->role = $request->get('userRole');
-        $newUser->password = Hash::make('test123456');
-        $newUser->status = $request->get('userStatus');
-        $newUser->remember_token = Str::random(10);
-        return back()->with('success', "User saved successfully");
+        try {
+            $newUser = User::find($request->get('user_id'));
+            $newUser->name = $request->get('userFullname');
+            $newUser->mobile = $request->get('userMobile');
+            $newUser->email = $request->get('userEmail');
+            $newUser->role = $request->get('userRole');
+            $newUser->status = $request->get('userStatus');
+            $newUser->save();
+            return back()->with('success', "User saved successfully");
+        } catch(Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+    public function getEditUserForm(Request $request, $user_id) {
+        $user_data = User::find($user_id);
+        $roles = Role::where('id', '!=', 1)->get();
+        try{
+            if(!$user_data) {
+                throw new Exception("User Details not found");
+            }
+            $render_htnl = '<form action="'.url('backend/user/edit').'" class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework" id="addNewUserForm" novalidate="validate" method="post">
+                '.csrf_field().'
+                <input type="hidden" name="user_id" value="'.$user_id.'" />
+                <div class="mb-3 fv-plugins-icon-container">
+                    <label class="form-label" for="add-user-fullname">Full Name</label>
+                    <input type="text" class="form-control" id="add-user-fullname" value="'.$user_data->name.'" placeholder="Enter Name" name="userFullname" aria-label="Enter Name">
+                    <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                    </div>
+                </div>
+                <div class="mb-3 fv-plugins-icon-container">
+                    <label class="form-label" for="add-user-email">Email</label>
+                    <input type="text" id="add-user-email" class="form-control" value="'.$user_data->email.'" placeholder="Enter Email" aria-label="Enter Email" name="userEmail">
+                    <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 col-sm-6">
+                        <label class="form-label" for="add-user-contact">Mobile</label>
+                        <input type="text" id="add-user-contact" class="form-control phone-mask" value="'.$user_data->mobile.'" placeholder="Enter Mobile" aria-label="Enter Mobile" name="userMobile">
+                    </div>
+                    <div class="mb-3 col-sm-6">
+                        <label class="form-label" for="user-role">User Role</label>
+                        <select id="user-role" name="userRole" class="form-select">';
+                            if($user_data->id == 1) {
+                                $render_htnl .= '<option value="1" selected>Super Admin</option>';
+                            } else {
+                                foreach ($roles as $role) {
+                                    if($role->id == $user_data->role) {
+                                        $render_htnl .= '<option value="'.$role->id.'" selected>'.$role->name.'</option>';
+                                    } else {
+                                        $render_htnl .= '<option value="'.$role->id.'">'.$role->name.'</option>';
+                                    }                                
+                                }
+                            }
+                        $render_htnl .= '</select>
+                    </div>
+                </div>
+                <div class="mb-3 fv-plugins-icon-container">
+                    <label class="form-label" for="add-user-address">Addree</label>
+                    <textarea type="text" id="add-user-address" class="form-control"
+                        placeholder="Enter Address" aria-label="Enter Address" name="userAddress" rows=3></textarea>
+                    <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 col-sm-6">
+                        <label class="form-label" for="user-plan">Select Status</label>
+                        <select id="user-plan" name="userStatus" class="form-select">';
+                            if($user_data->id == 1) {
+                                $render_htnl .= '<option value="1" selected>Active</option>';
+                            } else {
+                                if($user_data->status == 0) {
+                                    $render_htnl .= '<option value="0" selected>Inactive</option>
+                                    <option value="1">Active</option>';
+                                } else {
+                                    $render_htnl .= '<option value="0">Inactive</option>
+                                    <option value="1" selected>Active</option>';
+                                }  
+                            }
+                        $render_htnl .= '</select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Submit</button>
+                <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+            </form>';
+        } catch(Exception $e) {
+            $render_htnl  = $e->getMessage();
+        }
+        return $render_htnl;
     }
     public function delete_user(Request $request, $id) {
         $user = User::find($id);
-        if($user->role == 1) {
+        if(!$user) {
+            return back()->with('warning', "Something went wrong");
+        }
+        if($user && $user->role == 1) {
             return back()->with('warning', "Super Admin could not be deleted");
         }
         $user->delete();

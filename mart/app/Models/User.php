@@ -9,7 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Role;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -49,12 +50,21 @@ class User extends Authenticatable
     public function Role() {
         return $this->hasOne(Role::class, 'id', 'role');
     }
-    public static function hasAccess($key) {
+    public static function hasAccess($key, $slag = false) {
         $logedIn_user = Auth::getUser();
         $role_permissions = Role::find($logedIn_user->role)->access_and_pemissions;
         $accessList = array_keys(json_decode($role_permissions, true));
-        if(in_array($key, $accessList)) {
-            return true;
+        if($slag) {
+            if(in_array($key, $accessList)) {
+                return true;
+            }
+        } else {
+            $access_request = DB::table('role_permission')->where('name', $key)->first();
+            if($access_request) {
+                if(in_array($access_request->slag, $accessList)) {
+                    return true;
+                }
+            }
         }
         return false;
     }
