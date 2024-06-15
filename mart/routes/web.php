@@ -18,6 +18,9 @@ use App\Http\Controllers\Backend\Users;
 Route::get('auth-login', function () {
     return view('auth-login');
 });
+Route::get("/", function() {
+    return redirect('auth-login');
+});
 Route::post('authenticate', [UserAuth::class, 'authenticate']);
 Route::get('logout', [UserAuth::class, 'logout']);
 Route::get('auth-forgot', function () {

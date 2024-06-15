@@ -53,6 +53,9 @@ class User extends Authenticatable
     public static function hasAccess($key, $slag = false) {
         $logedIn_user = Auth::getUser();
         $role_permissions = Role::find($logedIn_user->role)->access_and_pemissions;
+        if(!$role_permissions) {
+            abort('403', "You do have not permission to access the page.");
+        }
         $accessList = array_keys(json_decode($role_permissions, true));
         if($slag) {
             if(in_array($key, $accessList)) {
