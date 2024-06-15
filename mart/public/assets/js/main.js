@@ -81,7 +81,7 @@ function() {
         e.addEventListener("hide.bs.collapse", d)
     });
     window.Helpers.setAutoUpdate(!0),
-    // window.Helpers.initPasswordToggle(),
+    window.Helpers.initPasswordToggle(),
     // window.Helpers.initSpeechToText(),
     window.Helpers.initNavbarDropdownScrollbar();
     let u = document.querySelector("[data-template^='horizontal-menu']");

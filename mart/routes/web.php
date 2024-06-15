@@ -26,37 +26,24 @@ Route::get('auth-forgot', function () {
 // Route::fallback(function () {
 //     return view('errors.404');
 // });
-// Route::prefix('backend')->group(function () {
-//     Route::get('/', function () {
-//         return view('backend.dashboard');
-//     });
-//     Route::prefix('user')->group(function () {
-//         Route::get('list', [Users::class, 'index']);
-//         Route::get('create', [Users::class, 'create']);
-//         Route::get('edit/{id}', [Users::class, 'edit']);
-//         Route::get('approve/{id}', [Users::class, 'approve']);
-//         Route::get('delete/{id}', [Users::class, 'delete']);
-//         Route::get('roles', [Users::class, 'roles']);
-//     });
-// })->middleware(Authenticate::class);
 
-Route::middleware(['auth', 'checkAccess'])->group(function() {
+Route::middleware(['auth'])->group(function() {
     Route::prefix('backend')->group(function () {
         Route::get('/', function () {
             return view('backend.dashboard');
-        });
+        })->middleware('checkAccess');
         Route::prefix('user')->group(function () {
-            Route::get('list', [Users::class, 'index']);
-            Route::post('add', [Users::class, 'add_user']);
+            Route::get('list', [Users::class, 'index'])->middleware('checkAccess');
+            Route::post('add', [Users::class, 'add_user'])->middleware('checkAccess');
             Route::get('editForm/{id}', [Users::class, 'getEditUserForm']);
-            Route::post('edit', [Users::class, 'edit_user']);
-            Route::get('approve/{id}', [Users::class, 'approve_user']);
-            Route::get('delete/{id}', [Users::class, 'delete_user']);
-            Route::get('roles', [Users::class, 'roles']);
+            Route::post('edit', [Users::class, 'edit_user'])->middleware('checkAccess');
+            Route::get('approve/{id}', [Users::class, 'approve_user'])->middleware('checkAccess');
+            Route::get('delete/{id}', [Users::class, 'delete_user'])->middleware('checkAccess');
+            Route::get('roles', [Users::class, 'roles'])->middleware('checkAccess');
         });
         Route::prefix('role')->group(function() {
-            Route::post('add', [Users::class, 'add_role']);
-            Route::post('edit', [Users::class, 'edit_role']);
+            Route::post('add', [Users::class, 'add_role'])->middleware('checkAccess');
+            Route::post('edit', [Users::class, 'edit_role'])->middleware('checkAccess');
         });
     });
 });

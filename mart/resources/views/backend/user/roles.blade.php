@@ -258,7 +258,7 @@
     </div>
 @endSection
 @section('script_content')
-    <script src="{{ asset('assets/vendor/libs/checkTree/jquery.checktree.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/checkTree/rolePermissiontree.js') }}"></script>
     <script>
         $(function(){
             $('ul.tree').checkTree({
@@ -275,8 +275,7 @@
                 access_and_pemissions = Object.keys($.parseJSON(access_and_pemissions));
                 $('.editRoleTree input[type="checkbox"]').each(function(index, elem) {
                     if($.inArray($(elem).data('slag'), access_and_pemissions) !== -1) {
-                        $(elem).prop('checked',true).siblings('.checkbox')
-                                .addClass('checked').parents("ul:first").siblings(":checkbox:first").trigger('refresh');
+                        $(elem).prop('checked',true).addClass('checked').siblings(".checkbox").addClass('checked');
                     }
                 });
             }

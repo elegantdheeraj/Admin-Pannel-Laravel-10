@@ -95,29 +95,8 @@
         $tree.find('.checkbox').click(function() {
             var $this = jQuery(this);
             $this.toggleClass('checked')
-               .removeClass('half_checked')
+               // .removeClass('half_checked')
                .siblings(':checkbox:first').prop('checked', $this.hasClass('checked'));
-
-            $this.filter('.checked').siblings('ul:first').find('.checkbox:not(.checked)')
-                .removeClass('half_checked')
-                .addClass('checked')
-                .siblings(':checkbox').prop('checked', true)
-            ;
-            $this.filter(':not(.checked)').siblings('ul:first').find('.checkbox.checked')
-                .removeClass('checked half_checked')
-                .siblings(':checkbox').prop('checked', false)
-            ;
-
-            // Send a change event to our parent checkbox:
-            $this.parents("ul:first").siblings(":checkbox:first").trigger('refresh');
-
-            // Handle callbacks
-            if (settings.onCheck && $this.hasClass('checked')) {
-                settings.onCheck($this.parent());
-            }
-            else if (settings.onUnCheck && $this.hasClass('checked') == false) {
-                settings.onUnCheck($this.parent());
-            }
         });
 
         /*
@@ -133,29 +112,11 @@
 
             if (any_checked) {
                 $this.prop('checked', true);
-                if (any_unchecked) {
-                    $checkbox
-                        .addClass('half_checked')
-                        .removeClass('checked')
-                    ;
-                    if (settings.onHalfCheck) {
-                        settings.onHalfCheck($this.parent());
-                    }
-                }
-                else {
-                    $checkbox
-                        .addClass('checked')
-                        .removeClass('half_checked')
-                    ;
-                }
             }
             else {
-                $checkbox.removeClass('checked half_checked');
+                // $checkbox.removeClass('checked half_checked');
                 $this.prop('checked', false);
             }
-
-            // Bubble up to our parent checkbox
-            $this.parents('ul:first').siblings(':checkbox:first').trigger('refresh');
         });
 
         /*
