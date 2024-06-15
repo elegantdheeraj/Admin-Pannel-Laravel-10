@@ -8,7 +8,7 @@ This project is an Admin Panel that provides comprehensive user management, acce
 - **Role Management:** Create and manage roles with specific permissions.
 - **Access Control:** Restrict access to various sections of the application based on user roles and permissions.
 - **Authentication:** Secure login and logout functionality.
-- **Dashboard:** Overview of system statistics and user activities.
+- **Dashboard:** Overview of statistics.
 
 ## Technologies Used
 - **Frontend:**
@@ -34,31 +34,34 @@ This project is an Admin Panel that provides comprehensive user management, acce
     git clone https://github.com/elegantdheeraj/mart.git
     cd Admin-Pannel-Laravel-10
     ```
+2. **create Docker envirnment:** After cloning goto the Admin-Pannel-Laravel-10 directory and run the docker cmd.
+   ```sh
+   sudo docker-compose up -d
+   ```
+3. Configure environment variables
 
-2. Configure environment variables
-
-3. **Run the following :**
-    1) Run the migration using following cmd
+3. **Run the following:**
+    1) Run the migration using the following cmd
    ```sh
    php artisan migrate
    ```
-    2) Run the seeding using following cmd
+    2) Run the seeding using the following cmd
    ```sh
    php artisan db:seed
    ```
-    Note: These command run in docker container php-8 for this you need to run command
+    Note: These commands run in the docker container php-8 for this you need to run the command
    ```sh
    sudo docker exec -it php-8 bash
    ```
-    and goto mart directory. Now you can run above command.
+    and go to the mart directory. Now you can go ahead and run the above command.
 4. **Access the application:**
     Open your browser and navigate to `http://localhost:8004`.
 
 ## Usage
 
 ### Creating Roles
-1. Navigate to the Users -> Role Permissions section in the admin panel.
-2. Click on "Add Role" and fill in the necessary details.
+1. Navigate to the admin panel's Users -> Role Permissions section.
+2. Click "Add Role" and fill in the necessary details.
 3. Assign permissions to the role.
 
 ### Managing Users
@@ -77,7 +80,7 @@ We welcome contributions to improve this project. Please follow these steps:
 5. Open a Pull Request.
 
 ## Acknowledgments
-- Thanks to the contributors and the open-source community for their valuable inputs and support.
+- Thanks to the contributors and the open-source community for their valuable input and support.
 
 ## Contact
 For any questions or suggestions, please contact us at [elegant.dheeraj@gmail.com].
