@@ -15,7 +15,7 @@
         the license that best suits your project and use it accordingly.
 */
 (function(jQuery) {
-    jQuery.fn.checkTree = function(settings) {
+    jQuery.fn.rolePermissionTree = function(settings) {
 
         settings = jQuery.extend({
             /* Callbacks

@@ -40,16 +40,21 @@ class Users extends Controller
                 'error' => 'Please fill the required field',
             ])->withInput();
         }
-        $newUser = new User();
-        $newUser->name = $request->get('userFullname');
-        $newUser->mobile = $request->get('userMobile');
-        $newUser->email = $request->get('userEmail');
-        $newUser->role = $request->get('userRole');
-        $newUser->password = Hash::make('test123456');
-        $newUser->status = $request->get('userStatus');
-        $newUser->remember_token = Str::random(10);
-        $newUser->save();
-        return back()->with('success', "User saved successfully");
+        try {
+            $newUser = new User();
+            $newUser->name = $request->get('userFullname');
+            $newUser->mobile = $request->get('userMobile');
+            $newUser->email = $request->get('userEmail');
+            $newUser->role = $request->get('userRole');
+            $newUser->password = Hash::make('test123456');
+            $newUser->status = $request->get('userStatus');
+            $newUser->remember_token = Str::random(10);
+            $newUser->save();
+            return back()->with('success', "User saved successfully");
+        } catch(Exception $e) {
+            return back()->with('success', $e->getMessage());
+        }
+        
     }
     public function edit_user(Request $request) {
         $validator = Validator::make($request->all(), [
@@ -208,14 +213,18 @@ class Users extends Controller
                 'error' => 'Please fill the required field',
             ])->withInput();
         }
-        $newRole = Role::find($request->role_id);
-        $newRole->access_and_pemissions = str_replace('\\','',json_encode($request->role_access_permissions));
-        if($request->role_id != 1) {
-            $newRole->name = $request->role_name;
-            $newRole->code = $request->role_code;
-            $newRole->status = $request->role_status;
+        try{
+            $newRole = Role::find($request->role_id);
+            $newRole->access_and_pemissions = str_replace('\\','',json_encode($request->role_access_permissions));
+            if($request->role_id != 1) {
+                $newRole->name = $request->role_name;
+                $newRole->code = $request->role_code;
+                $newRole->status = $request->role_status;
+            }
+            $newRole->save();
+            return back()->with('success', "Role updated successfully");
+        } catch(Exception $e) {
+            return back()->with('success', $e->getMessage());
         }
-        $newRole->save();
-        return back()->with('success', "Role updated successfully");
     }
 }

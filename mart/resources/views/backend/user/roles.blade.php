@@ -115,7 +115,7 @@
                         </div>
                     </div>
                     <div class="mb-4 col-6">
-                        <label class="form-label" for="user-plan">Select Status</label>
+                        <label class="form-label" for="role-status">Select Status</label>
                         <select id="role-status" name="role_status" class="form-select" required>
                             <option value="">Select Status</option>
                             <option value="0">Inactive</option>
@@ -124,7 +124,7 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="role-access-permission">Access & Permissions</label>
+                    <label class="form-label">Access & Permissions</label>
                     <div class="form-control div-h-200">
                         <ul class="tree addRoleTree">
                             @foreach ($role_access_permissions as $level1)
@@ -199,7 +199,7 @@
                         </div>
                     </div>
                     <div class="mb-4 col-6">
-                        <label class="form-label" for="user-plan">Select Status</label>
+                        <label class="form-label" for="edit-role-status">Select Status</label>
                         <select id="edit-role-status" name="role_status" class="form-select" required>
                             <option value="">Select Status</option>
                             <option value="0">Inactive</option>
@@ -208,7 +208,7 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="role-access-permission">Access & Permissions</label>
+                    <label class="form-label">Access & Permissions</label>
                     <div class="form-control div-h-200">
                         <ul class="tree editRoleTree">
                             @foreach ($role_access_permissions as $level1)
@@ -261,7 +261,7 @@
     <script src="{{ asset('assets/vendor/libs/checkTree/rolePermissiontree.js') }}"></script>
     <script>
         $(function(){
-            $('ul.tree').checkTree({
+            $('ul.tree').rolePermissionTree({
                 labelAction: "expand",
             });
         });
