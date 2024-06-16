@@ -47,7 +47,13 @@ This project is an Admin Panel that provides comprehensive user management, acce
     DB_USERNAME=root
     DB_PASSWORD=php123
    ```
-
+   ##### Note: For creating a database you need to make a connection using the following config which is in the docker-compose.yml as
+   ```sh
+   hostname: localhost
+   port:3312
+   username:root
+   password:php123
+   ```
 3. **Run the following:**
     1) Run the migration using the following cmd
    ```sh
