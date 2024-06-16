@@ -39,6 +39,12 @@ This project is an Admin Panel that provides comprehensive user management, acce
    sudo docker-compose up -d
    ```
 3. Configure environment variables
+    DB_CONNECTION=mysql
+    DB_HOST=db
+    DB_PORT=3306
+    DB_DATABASE=adminPannelLaravel10
+    DB_USERNAME=root
+    DB_PASSWORD=php123
 
 3. **Run the following:**
     1) Run the migration using the following cmd
